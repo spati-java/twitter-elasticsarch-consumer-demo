@@ -38,7 +38,7 @@ public class TweetConsumerService {
 
         try {
 
-            IndexRequest request = new IndexRequest("tweet","_doc",UUID.randomUUID().toString())
+            IndexRequest request = new IndexRequest("tweets_techlahoma","tweets")
                     .source(tweet,XContentType.JSON);
 
             IndexResponse response = client.index(request,RequestOptions.DEFAULT);
