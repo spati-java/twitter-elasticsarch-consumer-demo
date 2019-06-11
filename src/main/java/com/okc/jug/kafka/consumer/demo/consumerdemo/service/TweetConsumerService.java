@@ -22,31 +22,33 @@ public class TweetConsumerService {
 
     private CountDownLatch latch = new CountDownLatch(1);
 
-    private  final RestHighLevelClient client;
+    private final RestHighLevelClient client;
 
     @KafkaListener(topics = "twitter_tweet",
             containerFactory = "kafkaListenerContainerFactory")
     public void consumeAsString(ConsumerRecord<String, String> cr,
                                 @Payload String payload) {
         log.info(payload);
-        sendTweetToEs(payload);
+
+        sendTweetToEs(payload, cr.topic() + cr.partition() + cr.offset());
 
         latch.countDown();
     }
 
-    private void sendTweetToEs(String tweet){
+    private void sendTweetToEs(String tweet, String id) {
 
         try {
 
-            IndexRequest request = new IndexRequest("tweets_techlahoma","tweets")
-                    .source(tweet,XContentType.JSON);
+            IndexRequest request = new IndexRequest("tweets_techlahoma", "tweets", id)
+                    .source(tweet, XContentType.JSON);
 
-            IndexResponse response = client.index(request,RequestOptions.DEFAULT);
+            IndexResponse response = client.index(request, RequestOptions.DEFAULT);
+            log.info(response.status().name());
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
-                log.error(e.getMessage());
+            log.error(e.getMessage());
         }
 
     }

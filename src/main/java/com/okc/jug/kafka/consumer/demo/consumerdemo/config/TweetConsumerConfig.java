@@ -54,7 +54,7 @@ public class TweetConsumerConfig {
 
         Map<String, Object> props = new HashMap<>(kafkaProperties.buildConsumerProperties());
 
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka-3ce1f799-echo-enterprise-data-integration.aivencloud.com:25294");
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9091");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "okc-jug-group");
